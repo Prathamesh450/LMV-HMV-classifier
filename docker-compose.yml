@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: lmv_redis
+    ports:
+      - '6379:6379'
+
+  ai_worker:
+    image: lmv_ai:latest
+    build:
+      context: ./ai
+      dockerfile: Dockerfile
+    container_name: lmv_ai
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - JURISDICTION=pune
+    ports:
+      - '5000:5000'
+    depends_on:
+      - redis
+    volumes:
+      - ai_artifacts:/app/data/outputs
+
+  backend:
+    image: lmv_backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lmv_backend
+    environment:
+      - AI_WORKER_URL=http://ai_worker:5000/process
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - '8000:8000'
+    depends_on:
+      - ai_worker
+      - redis
+    volumes:
+      - ai_artifacts:/app/artifacts
+
+volumes:
+  ai_artifacts:
+    driver: local

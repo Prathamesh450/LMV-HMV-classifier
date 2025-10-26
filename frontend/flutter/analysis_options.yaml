@@ -1,0 +1,7 @@
+# This file configures the analyzer for the frontend Flutter app.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Project-specific lint rules can be added here.
+    # prefer_single_quotes: true

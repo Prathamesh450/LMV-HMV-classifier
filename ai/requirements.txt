@@ -1,0 +1,8 @@
+flask>=2.0
+ultralytics>=8.0
+opencv-python>=4.5
+easyocr>=1.6
+numpy>=1.23
+redis>=4.0
+shapely>=2.0
+geopy>=2.0
